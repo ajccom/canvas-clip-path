@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>三角形变化图形</title>
+  <meta content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width" name="viewport">
+  <meta content="telephone=no, email=no" name="format-detection">
+  <script src="sprite.js"></script>
+  <script src="triangles.js"></script>
+  <script src="data.js"></script>
+  <style>
+  * {margin: 0; padding: 0;}
+  canvas {width: 320px; height: 480px; display: block; margin: 0 auto}
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="320" height="480"></canvas>
+  <script>
+  "use strict"
+  ;(function () {
+    var ctx = document.getElementById('canvas').getContext('2d')
+    
+    function requestAFrame (fn) {
+      return (window.requestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      window.mozRequestAnimationFrame ||
+      window.oRequestAnimationFrame ||
+      setTimeout)(fn)
+    }
+    
+    function cancelAFrame (id) {
+      return (window.cancelAnimationFrame ||
+      window.webkitCancelAnimationFrame ||
+      window.mozCancelAnimationFrame ||
+      window.oCancelAnimationFrame ||
+      clearTimeout)(id)
+    }
+    
+    var ftpHandler = {
+      fps: 45,
+      lastTime: 0,
+      check: function () {
+        var time = +new Date(),
+            result = false
+        if (!this.lastTime) {
+          this.lastTime = time
+        } else {
+          if (time - this.lastTime >= 1000 / this.fps) {
+            this.lastTime = time
+            result = true
+          }
+        }
+        return result
+      }
+    }
+    
+    function init () {
+      var w = 320,
+          h = 480,
+          frameTimer = null
+          
+      function run () {
+        frameTimer = requestAFrame(function () {
+          if (ftpHandler.check()) {
+            draw()
+          }
+          run()
+        })
+      }
+      
+      var triangles = new Triangles(ctx)
+      window.triangles = triangles
+      
+      //triangles.append([[100,0], [150,50], [50,50]], []) 
+      //triangles.trans([{path:[[30,30],[40,40],[70,40]],color:[]}])
+      
+      var idx = 0
+      function autoTrans () {
+        var arr = []
+        if (window.animal) {
+          animal[idx].path.map(function (v, i) {
+            arr.push({path: [[v[0][0], v[0][1]], [v[1][0], v[1][1]], [v[2][0], v[2][1]]], color: [200 + 50 * Math.random(), 200 + 50 * Math.random(), 200 + 50 * Math.random()]})
+          })
+          triangles.trans(arr)
+          idx = (idx + 1) % animal.length
+        }
+      }
+      
+      [0, 1, 2, 3, 4, 5, 6, 7, 8].map(function (v, i) {
+        triangles.append([])
+      })
+      
+      setInterval(function () {
+        autoTrans()
+      }, 2000)
+      
+      function draw () {
+        ctx.clearRect(0, 0, w, h)
+        triangles.draw()
+      }
+      
+      run()
+    }
+    
+    init()
+    
+  }())
+  
+  </script>
+  <script type="text/javascript">
+  /*var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+  document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fd8f2c125d0bc7eb307617ca5a2d451d4' type='text/javascript'%3E%3C/script%3E"));*/
+  </script>
+</body>
+</html>
