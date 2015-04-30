@@ -1,0 +1,18 @@
+# canvas clip path
+
+CSS3中有一个叫clip-path的属性，可以切割元素成多边形，加之以动画，可以呈现很多奇妙的效果。
+
+我使用canvas来模拟类似效果(path仅仅是三角形一种情况)
+
+## 为什么要用canvas模拟
+
+ - 默认启用GPU计算，动画更流程；
+ - 兼容移动端，比CSS3 clip-path兼容性好；
+
+DEMO展示：[sinaapp](http://ajccom.sinaapp.com/demo/canvas-clip-path/)
+ 
+ 
+ 
+ 
+ 
+ 
